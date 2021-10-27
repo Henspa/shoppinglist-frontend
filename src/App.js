@@ -6,16 +6,16 @@ const URL = 'http://localhost/shoppinglist/';
 
 function App() {
   const [items, setItems] = useState([]);
-  const [item, setItem] = useState('type description');
-  const [amount, setAmount] = useState('type amount');
+  const [item, setItem] = useState('');
+  const [amount, setAmount] = useState('');
 
   useEffect(() => {
     axios.get(URL)
     .then((response) => {
       //console.log(response.data);
       setItems(response.data);
-      setItem(response.data);
-      setAmount(response.data);
+      //setItem(response.data);
+      //setAmount(response.data);
     }).catch(error => {
       alert(error.response ? error.response.data.error : error);
     })
@@ -30,13 +30,36 @@ function App() {
       }
     })
       .then((response) => {
-        setItems(items => [...items,response.data]);
+        setItems(items => [...items, response.data]);
         setItem('');
         setAmount('');
       }).catch (error => {
         alert(error.response.data.error)
       });
   }
+
+
+  return (
+    <div className="container">
+      <h3>Shopping List</h3>
+      <form onSubmit={add}>
+        <label>New item</label>
+        <input value={item} onChange={e => setItem(e.target.value)} />&nbsp;
+        <input value={amount} onChange={e => setAmount(e.target.value)} />
+        <button>Add</button>
+      </form>
+      <ol>
+        {items?.map(item => (
+          <li key={item.id}>
+            {item.description}&nbsp;
+            <a className="delete" onClick={() => remove(item.id)} href="#">
+              Delete
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
 
   function remove(id) {
     const json = JSON.stringify({id:id})
@@ -53,27 +76,6 @@ function App() {
     });
   }
 
-  return (
-    <div className="container">
-      <h3>Shopping List</h3>
-      <form onSubmit={add}>
-        <label>New item</label>
-        <input value={item} onChange={e => setItem(e.target.value)} />
-        <input value={amount} onChange={e => setAmount(e.target.value)} />
-        <button>Add</button>
-      </form>
-      <ol>
-        {items?.map(item => (
-          <li key={item.id}>
-            {item.description && item.amount}&nbsp;
-            <a className="delete" onClick={() => remove(item.id)} href="#">
-              Delete
-            </a>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
 }
 
 export default App;
