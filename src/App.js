@@ -30,7 +30,7 @@ function App() {
       }
     })
       .then((response) => {
-        setItems(items => [...items, response.data]);
+        setItems(items => [...items,response.data]);
         setItem('');
         setAmount('');
       }).catch (error => {
@@ -46,7 +46,7 @@ function App() {
       }
     })
     .then((response) => {
-      const newListWithoutRemoved = items.filter((item) => item.id !== id);
+      const newListWithoutRemoved = items.filter((task) => task.id !== id);
       setItems(newListWithoutRemoved);
     }).catch (error => {
       alert(error.response ? error.response.data.error : error);
@@ -58,15 +58,15 @@ function App() {
       <h3>Shopping List</h3>
       <form onSubmit={add}>
         <label>New item</label>
-        <input value={item} onChange={e => setItems(e.target.value)} />
+        <input value={item} onChange={e => setItem(e.target.value)} />
         <input value={amount} onChange={e => setAmount(e.target.value)} />
         <button>Add</button>
       </form>
       <ol>
         {items?.map(item => (
           <li key={item.id}>
-            {item.description}&nbsp;
-            <a href="#" className="delete" onClick={() => remove(item.id)}>
+            {item.description && item.amount}&nbsp;
+            <a className="delete" onClick={() => remove(item.id)} href="#">
               Delete
             </a>
           </li>
