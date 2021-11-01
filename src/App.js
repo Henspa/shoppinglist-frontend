@@ -23,7 +23,7 @@ function App() {
 
   function add(e) {
     e.preventDefault();
-    const json = JSON.stringify({description:item, amount:item})
+    const json = JSON.stringify({description:item, amount:amount})
     axios.post(URL + 'save.php',json,{
       headers: {
         'Content-Type' : 'application/json'
@@ -73,6 +73,8 @@ function App() {
     .then((response) => {
       const newListWithoutRemoved = items.filter((task) => task.id !== id);
       setItems(newListWithoutRemoved);
+      const newListWithoutRemoved2 = amounts.filter((task2) => task2.id !== id);
+      setAmounts(newListWithoutRemoved2);
     }).catch (error => {
       alert(error.response ? error.response.data.error : error);
     });
